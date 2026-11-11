@@ -1,108 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ivan Training Dashboard</title>
-
-<style>
-body{
-    font-family:Segoe UI,sans-serif;
-    background:#0f172a;
-    color:white;
-    padding:30px;
-}
-
-.card{
-    background:white;
-    color:#111;
-    padding:20px;
-    border-radius:16px;
-    margin-bottom:20px;
-}
-
-.metric{
-    font-size:32px;
-    font-weight:bold;
-    color:#2563eb;
-}
-</style>
-
+<title>Prueba</title>
 </head>
-<body>
+<body style="background:white;color:black;font-family:Arial">
 
-<h1>🚴 Ivan Training Dashboard</h1>
+<h1>FUNCIONA</h1>
 
-<div class="card">
-    <h2>FTP</h2>
-    <div id="ftp" class="metric">Cargando...</div>
-</div>
-
-<div class="card">
-    <h2>Peso</h2>
-    <div id="weight" class="metric">Cargando...</div>
-</div>
-
-<div class="card">
-    <h2>W/kg</h2>
-    <div id="wkg" class="metric">Cargando...</div>
-</div>
-
-<div class="card">
-    <h2>FC Umbral</h2>
-    <div id="lthr" class="metric">Cargando...</div>
-</div>
-
-<div class="card">
-    <h2>FC Máxima</h2>
-    <div id="maxhr" class="metric">Cargando...</div>
-</div>
-
-<script>
-async function cargarDatos() {
-
-    try {
-
-        const response = await fetch('./data/athlete.json');
-        const athlete = await response.json();
-
-        const cycling = athlete.sportSettings.find(
-            s => s.types.includes('Ride')
-        );
-
-        const ftp = cycling.ftp;
-        const peso = athlete.icu_weight;
-        const lthr = cycling.lthr;
-        const maxhr = cycling.max_hr;
-
-        document.getElementById('ftp').innerText =
-            ftp + ' W';
-
-        document.getElementById('weight').innerText =
-            peso + ' kg';
-
-        document.getElementById('wkg').innerText =
-            (ftp/peso).toFixed(2);
-
-        document.getElementById('lthr').innerText =
-            lthr + ' ppm';
-
-        document.getElementById('maxhr').innerText =
-            maxhr + ' ppm';
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        document.body.innerHTML +=
-        '<p style="color:red">Error cargando athlete.json</p>';
-
-    }
-}
-
-cargarDatos();
-</script>
+<p>Si ves este texto, GitHub Pages está cargando correctamente.</p>
 
 </body>
 </html>
