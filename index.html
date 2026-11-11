@@ -1,111 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Training Dashboard Ivan</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivan Training Dashboard</title>
 
 <style>
 body{
-    margin:0;
     font-family:Segoe UI,sans-serif;
     background:#0f172a;
-    color:#fff;
+    color:white;
+    padding:30px;
 }
 
-.header{
-    background:linear-gradient(135deg,#2563eb,#06b6d4);
-    padding:22px;
-}
-
-.wrap{
-    display:flex;
-}
-
-.side{
-    width:250px;
-    background:#111827;
-    padding:15px;
-    min-height:100vh;
-}
-
-.nav{
-    background:#1f2937;
-    padding:12px;
-    border-radius:12px;
-    margin:8px 0;
-}
-
-.main{
-    flex:1;
-    padding:20px;
-}
-
-.panel,.card{
-    background:#fff;
+.card{
+    background:white;
     color:#111;
-    border-radius:18px;
-    padding:15px;
-}
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-    gap:15px;
+    padding:20px;
+    border-radius:16px;
+    margin-bottom:20px;
 }
 
 .metric{
-    font-size:28px;
-    font-weight:700;
+    font-size:32px;
+    font-weight:bold;
     color:#2563eb;
 }
+</style>
 
-.summary{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-    gap:10px;
+</head>
+<body>
+
+<h1>🚴 Ivan Training Dashboard</h1>
+
+<div class="card">
+    <h2>FTP</h2>
+    <div id="ftp" class="metric">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>Peso</h2>
+    <div id="weight" class="metric">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>W/kg</h2>
+    <div id="wkg" class="metric">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>FC Umbral</h2>
+    <div id="lthr" class="metric">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>FC Máxima</h2>
+    <div id="maxhr" class="metric">Cargando...</div>
+</div>
+
+<script>
+async function cargarDatos() {
+
+    try {
+
+        const response = await fetch('./data/athlete.json');
+        const athlete = await response.json();
+
+        const cycling = athlete.sportSettings.find(
+            s => s.types.includes('Ride')
+        );
+
+        const ftp = cycling.ftp;
+        const peso = athlete.icu_weight;
+        const lthr = cycling.lthr;
+        const maxhr = cycling.max_hr;
+
+        document.getElementById('ftp').innerText =
+            ftp + ' W';
+
+        document.getElementById('weight').innerText =
+            peso + ' kg';
+
+        document.getElementById('wkg').innerText =
+            (ftp/peso).toFixed(2);
+
+        document.getElementById('lthr').innerText =
+            lthr + ' ppm';
+
+        document.getElementById('maxhr').innerText =
+            maxhr + ' ppm';
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        document.body.innerHTML +=
+        '<p style="color:red">Error cargando athlete.json</p>';
+
+    }
 }
 
-.box{
-    background:#eff6ff;
-    border-radius:12px;
-    padding:10px;
-    text-align:center;
-}
+cargarDatos();
+</script>
 
-.sports,
-.grid{
-    display:grid;
-    gap:15px;
-}
-
-.sports{
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    margin:15px 0;
-}
-
-.grid{
-    grid-template-columns:1fr 1fr;
-    margin-top:15px;
-}
-
-.sport{
-    padding:15px;
-    border-radius:18px;
-    color:white;
-}
-
-.bike{
-    background:#2563eb;
-}
-
-.run{
-    background:#16a34a;
-}
-
-.gym{
-    background:#ea580c;
-}
-
+</body>
+</html>
