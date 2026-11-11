@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Ivan Training Dashboard</title>
 
@@ -19,15 +19,15 @@
     <aside class="sidebar">
 
         <div class="logo">
-            🚴 Ivan Dashboard
+            🚴 Dashboard
         </div>
 
-        <div class="menu-item" onclick="showPage('dashboard')">
-            📊 Dashboard
+        <div class="menu-item" onclick="showPage('summary')">
+            📊 Resumen
         </div>
 
-        <div class="menu-item" onclick="showPage('power')">
-            ⚡ Potencia
+        <div class="menu-item" onclick="showPage('cycling')">
+            🚴 Ciclismo
         </div>
 
         <div class="menu-item" onclick="showPage('hr')">
@@ -38,221 +38,39 @@
             🔥 Carga
         </div>
 
-        <div class="menu-item" onclick="showPage('config')">
-            ⚙️ Configuración
-        </div>
-
     </aside>
 
     <main class="content">
 
-        <!-- DASHBOARD -->
+        <section id="summary" class="page active">
 
-        <section id="dashboard" class="page active">
+            <h1>Semana Actual</h1>
 
-            <h1>Dashboard</h1>
-
-            <div class="cards">
+            <div class="summary-grid">
 
                 <div class="card">
-                    <div class="card-title">FTP</div>
-                    <div id="dashboard-ftp" class="card-value">...</div>
+                    <div class="card-title">Distancia</div>
+                    <div id="week-km" class="card-value">...</div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">Peso</div>
-                    <div id="dashboard-weight" class="card-value">...</div>
+                    <div class="card-title">Desnivel</div>
+                    <div id="week-elevation" class="card-value">...</div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">W/kg</div>
-                    <div id="dashboard-wkg" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Fitness (CTL)</div>
-                    <div id="dashboard-fitness" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Fatigue (ATL)</div>
-                    <div id="dashboard-fatigue" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Form</div>
-                    <div id="dashboard-form" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Km Semana</div>
-                    <div id="dashboard-distance" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Training Load</div>
-                    <div id="dashboard-load" class="card-value">...</div>
+                    <div class="card-title">Tiempo</div>
+                    <div id="week-time" class="card-value">...</div>
                 </div>
 
                 <div class="card">
                     <div class="card-title">Actividades</div>
-                    <div id="dashboard-count" class="card-value">...</div>
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- POTENCIA -->
-
-        <section id="power" class="page">
-
-            <h1>Potencia</h1>
-
-            <div class="cards">
-
-                <div class="card">
-                    <div class="card-title">FTP</div>
-                    <div id="power-ftp" class="card-value">...</div>
+                    <div id="week-activities" class="card-value">...</div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">FTP Indoor</div>
-                    <div id="power-indoor" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Critical Power</div>
-                    <div id="power-cp" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">W'</div>
-                    <div id="power-wprime" class="card-value">...</div>
-                </div>
-
-            </div>
-
-            <div class="section">
-
-                <h2>Zonas Potencia</h2>
-
-                <div class="zone">
-                    Z1 Recuperación
-                    <div class="bar">
-                        <div class="fill" style="width:55%">55%</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z2 Resistencia
-                    <div class="bar">
-                        <div class="fill" style="width:75%">75%</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z3 Tempo
-                    <div class="bar">
-                        <div class="fill" style="width:90%">90%</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z4 Umbral
-                    <div class="bar">
-                        <div class="fill" style="width:100%">100%</div>
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- PULSO -->
-
-        <section id="hr" class="page">
-
-            <h1>Pulso</h1>
-
-            <div class="cards">
-
-                <div class="card">
-                    <div class="card-title">LTHR</div>
-                    <div id="hr-lthr" class="card-value">...</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">FC Máxima</div>
-                    <div id="hr-max" class="card-value">...</div>
-                </div>
-
-            </div>
-
-            <div class="section">
-
-                <h2>Zonas de Frecuencia Cardíaca</h2>
-
-                <div class="zone">
-                    Z1
-                    <div class="bar">
-                        <div class="fill" style="width:50%">136</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z2
-                    <div class="bar">
-                        <div class="fill" style="width:65%">155</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z3
-                    <div class="bar">
-                        <div class="fill" style="width:75%">164</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z4
-                    <div class="bar">
-                        <div class="fill" style="width:85%">174</div>
-                    </div>
-                </div>
-
-                <div class="zone">
-                    Z5
-                    <div class="bar">
-                        <div class="fill" style="width:100%">190</div>
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- CARGA -->
-
-        <section id="load" class="page">
-
-            <h1>Carga</h1>
-
-            <div class="cards">
-
-                <div class="card">
-                    <div class="card-title">Fitness</div>
-                    <div id="dashboard-fitness-copy" class="card-value">59.5</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Fatigue</div>
-                    <div id="dashboard-fatigue-copy" class="card-value">47.2</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Form</div>
-                    <div id="dashboard-form-copy" class="card-value">12.3</div>
+                    <div class="card-title">Load</div>
+                    <div id="week-load" class="card-value">...</div>
                 </div>
 
             </div>
@@ -261,41 +79,80 @@
 
                 <h2>Estado actual</h2>
 
-                <p>
-                    Form positivo = buena frescura para competir.
-                </p>
+                <p>Fitness: <b id="fitness"></b></p>
+
+                <p>Fatigue: <b id="fatigue"></b></p>
+
+                <p>Form: <b id="form"></b></p>
+
+                <p id="training-status"></p>
+
+            </div>
+
+            <div class="section">
+
+                <h2>Tiempo en zonas</h2>
+
+                <div id="zones"></div>
 
             </div>
 
         </section>
 
-        <!-- CONFIG -->
+        <section id="cycling" class="page">
 
-        <section id="config" class="page">
+            <h1>Ciclismo</h1>
 
-            <h1>Configuración</h1>
-
-            <div class="cards">
+            <div class="summary-grid">
 
                 <div class="card">
-                    <div class="card-title">Atleta</div>
-                    <div id="config-name" class="card-value">...</div>
+                    <div class="card-title">FTP</div>
+                    <div id="ftp" class="card-value"></div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">Ubicación</div>
-                    <div id="config-location" class="card-value">...</div>
+                    <div class="card-title">Critical Power</div>
+                    <div id="cp" class="card-value"></div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">Peso</div>
-                    <div id="config-weight" class="card-value">...</div>
+                    <div class="card-title">W'</div>
+                    <div id="wprime" class="card-value"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="hr" class="page">
+
+            <h1>Pulso</h1>
+
+            <div class="summary-grid">
+
+                <div class="card">
+                    <div class="card-title">LTHR</div>
+                    <div id="lthr" class="card-value"></div>
                 </div>
 
                 <div class="card">
-                    <div class="card-title">Bicicletas</div>
-                    <div id="config-bikes">...</div>
+                    <div class="card-title">FC Máxima</div>
+                    <div id="maxhr" class="card-value"></div>
                 </div>
+
+            </div>
+
+        </section>
+
+        <section id="load" class="page">
+
+            <h1>Carga</h1>
+
+            <div class="section">
+
+                <p>Fitness: <b id="fitness-copy"></b></p>
+                <p>Fatigue: <b id="fatigue-copy"></b></p>
+                <p>Form: <b id="form-copy"></b></p>
 
             </div>
 
@@ -308,4 +165,5 @@
 <script src="js/app.js"></script>
 
 </body>
+
 </html>
