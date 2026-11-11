@@ -32,12 +32,12 @@ jobs:
           "https://intervals.icu/api/v1/athlete/0/athlete-summary.json" \
           > data/summary.json
 
-      - name: Download Activities
+      - name: Download Wellness History
         run: |
           curl -s \
           -u "API_KEY:${{ secrets.INTERVALS_API_KEY }}" \
-          "https://intervals.icu/api/v1/athlete/0/activities" \
-          > data/activities.json
+          "https://intervals.icu/api/v1/athlete/0/wellness.json" \
+          > data/wellness.json
 
       - name: Commit Data
         run: |
