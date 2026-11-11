@@ -1,4 +1,11 @@
-name: Intervals Sync
+      - name: Download Summary
+        run: |
+          mkdir -p data
+
+          curl -s \
+          -u "API_KEY:${{ secrets.INTERVALS_API_KEY }}" \
+          "https://intervals.icu/api/v1/athlete/0/athlete-summary.json" \
+          > data/summary.json
 
 on:
   workflow_dispatch:
@@ -28,8 +35,8 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git add data/athlete.json
+          git add data/summary.json
 
-          git commit -m "Update athlete" || echo "No changes"
+          git commit -m "Update summary" || echo "No changes"
 
           git push
