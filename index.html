@@ -1,13 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-<title>Prueba</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivan Dashboard</title>
+
+<style>
+body{
+    font-family:Segoe UI,sans-serif;
+    background:#0f172a;
+    color:white;
+    padding:30px;
+}
+
+.card{
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.valor{
+    font-size:32px;
+    font-weight:bold;
+    color:#2563eb;
+}
+</style>
 </head>
-<body style="background:white;color:black;font-family:Arial">
 
-<h1>FUNCIONA</h1>
+<body>
 
-<p>Si ves este texto, GitHub Pages está cargando correctamente.</p>
+<h1>🚴 Ivan Dashboard</h1>
+
+<div class="card">
+    <h2>FTP</h2>
+    <div id="ftp" class="valor">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>Peso</h2>
+    <div id="peso" class="valor">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>W/kg</h2>
+    <div id="wkg" class="valor">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>FC Umbral</h2>
+    <div id="lthr" class="valor">Cargando...</div>
+</div>
+
+<div class="card">
+    <h2>FC Máxima</h2>
+    <div id="maxhr" class="valor">Cargando...</div>
+</div>
+
+<script>
+fetch('./data/athlete.json')
+.then(r => r.json())
+.then(athlete => {
+
+    const cycling = athlete.sportSettings.find(
+        s => s.types.includes('Ride')
+    );
+
+    const ftp = cycling.ftp;
+    const peso = athlete.icu_weight;
+    const lthr = cycling.lthr;
+    const maxhr = cycling.max_hr;
+
+    document.getElementById('ftp').innerText =
+        ftp + ' W';
+
+    document.getElementById('peso').innerText =
+        peso + ' kg';
+
+    document.getElementById('wkg').innerText =
+        (ftp / peso).toFixed(2);
+
+    document.getElementById('lthr').innerText =
+        lthr + ' ppm';
+
+    document.getElementById('maxhr').innerText =
+        maxhr + ' ppm';
+
+})
+.catch(err => {
+
+    document.body.innerHTML +=
+    '<p style="color:red">ERROR: ' + err + '</p>';
+
+});
+</script>
 
 </body>
 </html>
