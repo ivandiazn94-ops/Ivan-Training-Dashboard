@@ -3,97 +3,197 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ivan Dashboard</title>
+<title>Ivan Training Dashboard</title>
 
 <style>
+
 body{
     font-family:Segoe UI,sans-serif;
     background:#0f172a;
     color:white;
-    padding:30px;
+    margin:0;
+    padding:20px;
+}
+
+h1{
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
 }
 
 .card{
     background:white;
-    color:black;
+    color:#111;
     padding:20px;
-    border-radius:12px;
-    margin-bottom:20px;
+    border-radius:16px;
+}
+
+.titulo{
+    font-size:14px;
+    color:#666;
 }
 
 .valor{
+    margin-top:10px;
     font-size:32px;
     font-weight:bold;
     color:#2563eb;
 }
+
+@media(max-width:768px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>🚴 Ivan Dashboard</h1>
+<h1>🚴 Ivan Training Dashboard</h1>
 
-<div class="card">
-    <h2>FTP</h2>
-    <div id="ftp" class="valor">Cargando...</div>
-</div>
+<div class="grid">
 
-<div class="card">
-    <h2>Peso</h2>
-    <div id="peso" class="valor">Cargando...</div>
-</div>
+    <div class="card">
+        <div class="titulo">FTP</div>
+        <div id="ftp" class="valor">...</div>
+    </div>
 
-<div class="card">
-    <h2>W/kg</h2>
-    <div id="wkg" class="valor">Cargando...</div>
-</div>
+    <div class="card">
+        <div class="titulo">Peso</div>
+        <div id="peso" class="valor">...</div>
+    </div>
 
-<div class="card">
-    <h2>FC Umbral</h2>
-    <div id="lthr" class="valor">Cargando...</div>
-</div>
+    <div class="card">
+        <div class="titulo">W/kg</div>
+        <div id="wkg" class="valor">...</div>
+    </div>
 
-<div class="card">
-    <h2>FC Máxima</h2>
-    <div id="maxhr" class="valor">Cargando...</div>
+    <div class="card">
+        <div class="titulo">FC Umbral</div>
+        <div id="lthr" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">FC Máxima</div>
+        <div id="maxhr" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">Fitness (CTL)</div>
+        <div id="fitness" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">Fatigue (ATL)</div>
+        <div id="fatigue" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">Form</div>
+        <div id="form" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">Actividades Semana</div>
+        <div id="count" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">Km Semana</div>
+        <div id="distance" class="valor">...</div>
+    </div>
+
+    <div class="card">
+        <div class="titulo">Training Load</div>
+        <div id="load" class="valor">...</div>
+    </div>
+
 </div>
 
 <script>
-fetch('./data/athlete.json')
-.then(r => r.json())
-.then(athlete => {
 
-    const cycling = athlete.sportSettings.find(
-        s => s.types.includes('Ride')
-    );
+async function cargarDashboard(){
 
-    const ftp = cycling.ftp;
-    const peso = athlete.icu_weight;
-    const lthr = cycling.lthr;
-    const maxhr = cycling.max_hr;
+    try {
 
-    document.getElementById('ftp').innerText =
-        ftp + ' W';
+        const athleteResponse =
+            await fetch('./data/athlete.json');
 
-    document.getElementById('peso').innerText =
-        peso + ' kg';
+        const athlete =
+            await athleteResponse.json();
 
-    document.getElementById('wkg').innerText =
-        (ftp / peso).toFixed(2);
+        const summaryResponse =
+            await fetch('./data/summary.json');
 
-    document.getElementById('lthr').innerText =
-        lthr + ' ppm';
+        const summary =
+            await summaryResponse.json();
 
-    document.getElementById('maxhr').innerText =
-        maxhr + ' ppm';
+        const cycling =
+            athlete.sportSettings.find(
+                s => s.types.includes('Ride')
+            );
 
-})
-.catch(err => {
+        const ftp = cycling.ftp;
+        const peso = athlete.icu_weight;
 
-    document.body.innerHTML +=
-    '<p style="color:red">ERROR: ' + err + '</p>';
+        document.getElementById('ftp').innerText =
+            ftp + " W";
 
-});
+        document.getElementById('peso').innerText =
+            peso + " kg";
+
+        document.getElementById('wkg').innerText =
+            (ftp / peso).toFixed(2);
+
+        document.getElementById('lthr').innerText =
+            cycling.lthr;
+
+        document.getElementById('maxhr').innerText =
+            cycling.max_hr;
+
+        const semana = summary[0];
+
+        document.getElementById('fitness').innerText =
+            semana.fitness.toFixed(1);
+
+        document.getElementById('fatigue').innerText =
+            semana.fatigue.toFixed(1);
+
+        document.getElementById('form').innerText =
+            semana.form.toFixed(1);
+
+        document.getElementById('count').innerText =
+            semana.count;
+
+        document.getElementById('distance').innerText =
+            (semana.distance / 1000).toFixed(1);
+
+        document.getElementById('load').innerText =
+            semana.training_load;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+          "Error cargando datos. Revisa athlete.json y summary.json"
+        );
+
+    }
+
+}
+
+cargarDashboard();
+
 </script>
 
 </body>
