@@ -2,53 +2,101 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ivan Training Dashboard</title>
 
 <style>
 
+*{
+  box-sizing:border-box;
+}
+
 body{
-    font-family:Segoe UI,sans-serif;
-    background:#0f172a;
-    color:white;
-    margin:0;
-    padding:20px;
+  margin:0;
+  background:#0f172a;
+  color:white;
+  font-family:Segoe UI,sans-serif;
+}
+
+header{
+  background:#111827;
+  padding:20px;
 }
 
 h1{
-    margin-bottom:25px;
+  margin:0;
+}
+
+.container{
+  padding:20px;
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
 }
 
 .card{
-    background:white;
-    color:#111;
-    padding:20px;
-    border-radius:16px;
+  background:white;
+  color:#111827;
+  border-radius:16px;
+  padding:20px;
 }
 
-.titulo{
-    font-size:14px;
-    color:#666;
+.label{
+  font-size:14px;
+  color:#666;
 }
 
-.valor{
-    margin-top:10px;
-    font-size:32px;
-    font-weight:bold;
-    color:#2563eb;
+.value{
+  font-size:34px;
+  font-weight:bold;
+  color:#2563eb;
+  margin-top:8px;
+}
+
+.section{
+  margin-top:25px;
+}
+
+.section h2{
+  margin-bottom:15px;
+}
+
+.bar{
+  background:#1f2937;
+  height:36px;
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+
+.fill{
+  background:#2563eb;
+  height:100%;
+  display:flex;
+  align-items:center;
+  padding-left:10px;
+  color:white;
+  font-weight:bold;
+}
+
+.zoneRow{
+  margin-bottom:12px;
+}
+
+.footer{
+  margin-top:30px;
+  text-align:center;
+  opacity:.7;
 }
 
 @media(max-width:768px){
 
-    .grid{
-        grid-template-columns:1fr;
-    }
+  .grid{
+    grid-template-columns:1fr;
+  }
 
 }
 
@@ -57,142 +105,205 @@ h1{
 
 <body>
 
-<h1>🚴 Ivan Training Dashboard</h1>
+<header>
+  <h1>🚴 Ivan Training Dashboard</h1>
+</header>
 
-<div class="grid">
+<div class="container">
+
+  <div class="grid">
 
     <div class="card">
-        <div class="titulo">FTP</div>
-        <div id="ftp" class="valor">...</div>
+      <div class="label">FTP</div>
+      <div id="ftp" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">Peso</div>
-        <div id="peso" class="valor">...</div>
+      <div class="label">Peso</div>
+      <div id="peso" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">W/kg</div>
-        <div id="wkg" class="valor">...</div>
+      <div class="label">W/kg</div>
+      <div id="wkg" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">FC Umbral</div>
-        <div id="lthr" class="valor">...</div>
+      <div class="label">Fitness (CTL)</div>
+      <div id="fitness" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">FC Máxima</div>
-        <div id="maxhr" class="valor">...</div>
+      <div class="label">Fatigue (ATL)</div>
+      <div id="fatigue" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">Fitness (CTL)</div>
-        <div id="fitness" class="valor">...</div>
+      <div class="label">Form</div>
+      <div id="form" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">Fatigue (ATL)</div>
-        <div id="fatigue" class="valor">...</div>
+      <div class="label">Actividades</div>
+      <div id="count" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">Form</div>
-        <div id="form" class="valor">...</div>
+      <div class="label">Km Semana</div>
+      <div id="distance" class="value">...</div>
     </div>
 
     <div class="card">
-        <div class="titulo">Actividades Semana</div>
-        <div id="count" class="valor">...</div>
+      <div class="label">Training Load</div>
+      <div id="load" class="value">...</div>
     </div>
 
-    <div class="card">
-        <div class="titulo">Km Semana</div>
-        <div id="distance" class="valor">...</div>
-    </div>
+  </div>
 
-    <div class="card">
-        <div class="titulo">Training Load</div>
-        <div id="load" class="valor">...</div>
-    </div>
+  <div class="section">
+
+    <h2>⚡ Zonas de Potencia</h2>
+
+    <div id="powerZones"></div>
+
+  </div>
+
+  <div class="section">
+
+    <h2>❤️ Zonas de Frecuencia Cardíaca</h2>
+
+    <div id="hrZones"></div>
+
+  </div>
+
+  <div class="section">
+
+    <h2>📊 Distribución semanal por zonas</h2>
+
+    <div id="weekZones"></div>
+
+  </div>
+
+  <div class="footer">
+
+    Datos obtenidos desde Intervals.icu
+
+  </div>
 
 </div>
 
 <script>
 
-async function cargarDashboard(){
+async function loadDashboard(){
 
-    try {
+  const athlete =
+      await fetch('./data/athlete.json')
+      .then(r => r.json());
 
-        const athleteResponse =
-            await fetch('./data/athlete.json');
+  const summary =
+      await fetch('./data/summary.json')
+      .then(r => r.json());
 
-        const athlete =
-            await athleteResponse.json();
+  const cycling =
+      athlete.sportSettings.find(
+          s => s.types.includes("Ride")
+      );
 
-        const summaryResponse =
-            await fetch('./data/summary.json');
+  const week = summary[0];
 
-        const summary =
-            await summaryResponse.json();
+  const ftp = cycling.ftp;
+  const weight = athlete.icu_weight;
 
-        const cycling =
-            athlete.sportSettings.find(
-                s => s.types.includes('Ride')
-            );
+  document.getElementById('ftp').innerText =
+      ftp + " W";
 
-        const ftp = cycling.ftp;
-        const peso = athlete.icu_weight;
+  document.getElementById('peso').innerText =
+      weight + " kg";
 
-        document.getElementById('ftp').innerText =
-            ftp + " W";
+  document.getElementById('wkg').innerText =
+      (ftp/weight).toFixed(2);
 
-        document.getElementById('peso').innerText =
-            peso + " kg";
+  document.getElementById('fitness').innerText =
+      week.fitness.toFixed(1);
 
-        document.getElementById('wkg').innerText =
-            (ftp / peso).toFixed(2);
+  document.getElementById('fatigue').innerText =
+      week.fatigue.toFixed(1);
 
-        document.getElementById('lthr').innerText =
-            cycling.lthr;
+  document.getElementById('form').innerText =
+      week.form.toFixed(1);
 
-        document.getElementById('maxhr').innerText =
-            cycling.max_hr;
+  document.getElementById('count').innerText =
+      week.count;
 
-        const semana = summary[0];
+  document.getElementById('distance').innerText =
+      (week.distance/1000).toFixed(1);
 
-        document.getElementById('fitness').innerText =
-            semana.fitness.toFixed(1);
+  document.getElementById('load').innerText =
+      week.training_load;
 
-        document.getElementById('fatigue').innerText =
-            semana.fatigue.toFixed(1);
+  let powerHtml = '';
 
-        document.getElementById('form').innerText =
-            semana.form.toFixed(1);
+  cycling.power_zones.forEach((z,i)=>{
 
-        document.getElementById('count').innerText =
-            semana.count;
+      powerHtml += `
+      <div class="zoneRow">
+        Z${i+1}
+        <div class="bar">
+          <div class="fill" style="width:${Math.min(z,100)}%">
+            ${z}
+          </div>
+        </div>
+      </div>`;
+  });
 
-        document.getElementById('distance').innerText =
-            (semana.distance / 1000).toFixed(1);
+  document.getElementById('powerZones').innerHTML =
+      powerHtml;
 
-        document.getElementById('load').innerText =
-            semana.training_load;
+  let hrHtml = '';
 
-    }
-    catch(error){
+  cycling.hr_zones.forEach((z,i)=>{
 
-        console.error(error);
+      hrHtml += `
+      <div class="zoneRow">
+        Z${i+1}
+        <div class="bar">
+          <div class="fill" style="width:${Math.min(z/2,100)}%">
+            ${z} ppm
+          </div>
+        </div>
+      </div>`;
+  });
 
-        alert(
-          "Error cargando datos. Revisa athlete.json y summary.json"
-        );
+  document.getElementById('hrZones').innerHTML =
+      hrHtml;
 
-    }
+  const total =
+      week.timeInZones.reduce((a,b)=>a+b,0);
+
+  let weekHtml = '';
+
+  week.timeInZones.forEach((z,i)=>{
+
+      const pct =
+          ((z/total)*100).toFixed(1);
+
+      weekHtml += `
+      <div class="zoneRow">
+        Zona ${i+1}
+        <div class="bar">
+          <div class="fill" style="width:${pct}%">
+            ${pct}%
+          </div>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('weekZones').innerHTML =
+      weekHtml;
 
 }
 
-cargarDashboard();
+loadDashboard();
 
 </script>
 
