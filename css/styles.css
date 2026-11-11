@@ -1,70 +1,142 @@
-function showPage(id){
-
-    document
-        .querySelectorAll('.page')
-        .forEach(p => p.classList.remove('active'));
-
-    document
-        .getElementById(id)
-        .classList.add('active');
-
+*{
+    box-sizing:border-box;
 }
 
-async function loadData(){
-
-    const athlete =
-        await fetch('./data/athlete.json')
-        .then(r=>r.json());
-
-    const summary =
-        await fetch('./data/summary.json')
-        .then(r=>r.json());
-
-    const cycling =
-        athlete.sportSettings.find(
-            s => s.types.includes('Ride')
-        );
-
-    const running =
-        athlete.sportSettings.find(
-            s => s.types.includes('Run')
-        );
-
-    const week = summary[0];
-
-    document.getElementById('ftp').innerText =
-        cycling.ftp;
-
-    document.getElementById('fitness').innerText =
-        week.fitness.toFixed(1);
-
-    document.getElementById('fatigue').innerText =
-        week.fatigue.toFixed(1);
-
-    document.getElementById('form').innerText =
-        week.form.toFixed(1);
-
-    document.getElementById('weight').innerText =
-        athlete.icu_weight;
-
-    document.getElementById('power-ftp').innerText =
-        cycling.ftp;
-
-    document.getElementById('power-ftp-indoor').innerText =
-        cycling.indoor_ftp;
-
-    document.getElementById('power-cp').innerText =
-        cycling.mmp_model.criticalPower;
-
-    document.getElementById('power-wprime').innerText =
-        cycling.mmp_model.wPrime;
-
-    document.getElementById('hr-lthr').innerText =
-        cycling.lthr;
-
-    document.getElementById('hr-max').innerText =
-        cycling.max_hr;
-
+body{
+    margin:0;
+    font-family:Segoe UI,sans-serif;
+    background:#0f172a;
+    color:white;
 }
 
-loadData();
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:250px;
+    background:#111827;
+    padding:20px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.menu-item{
+    padding:12px;
+    margin-bottom:8px;
+    border-radius:10px;
+    background:#1f2937;
+    cursor:pointer;
+}
+
+.menu-item:hover{
+    background:#2563eb;
+}
+
+.content{
+    flex:1;
+    padding:25px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    color:#111827;
+    border-radius:16px;
+    padding:18px;
+}
+
+.card-title{
+    color:#666;
+    font-size:14px;
+}
+
+.card-value{
+    color:#2563eb;
+    font-size:28px;
+    font-weight:bold;
+    margin-top:8px;
+}
+
+.section{
+    background:white;
+    color:#111827;
+    border-radius:16px;
+    padding:20px;
+    margin-top:20px;
+}
+
+.section h2{
+    margin-top:0;
+}
+
+.zone{
+    margin-bottom:12px;
+}
+
+.zone-name{
+    margin-bottom:5px;
+}
+
+.bar{
+    height:26px;
+    border-radius:8px;
+    background:#e5e7eb;
+    overflow:hidden;
+}
+
+.fill{
+    background:#2563eb;
+    height:100%;
+    color:white;
+    display:flex;
+    align-items:center;
+    padding-left:10px;
+    font-size:13px;
+}
+
+.status-good{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.status-neutral{
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+.status-bad{
+    color:#dc2626;
+    font-weight:bold;
+}
+
+@media(max-width:900px){
+
+    .layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+    }
+
+}
