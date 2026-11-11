@@ -11,14 +11,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download Activities
+      - name: Download Athlete
         run: |
           mkdir -p data
 
           curl -s \
           -u "API_KEY:${{ secrets.INTERVALS_API_KEY }}" \
-          "https://intervals.icu/api/v1/athlete/i559371/activities?oldest=2026-01-01" \
-          > data/activities.json
+          "https://intervals.icu/api/v1/athlete/0" \
+          > data/athlete.json
 
       - name: Commit Activities
         run: |
