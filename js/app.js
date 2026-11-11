@@ -2,7 +2,7 @@ function showPage(id){
 
     document
         .querySelectorAll('.page')
-        .forEach(page => page.classList.remove('active'));
+        .forEach(p => p.classList.remove('active'));
 
     document
         .getElementById(id)
@@ -10,89 +10,122 @@ function showPage(id){
 
 }
 
+function formatTime(seconds){
+
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+
+    if(h > 0){
+        return `${h}h ${m}m`;
+    }
+
+    return `${m}m ${s}s`;
+}
+
 async function loadData(){
 
     const athlete =
         await fetch('./data/athlete.json')
-        .then(r => r.json());
+        .then(r=>r.json());
 
     const summary =
         await fetch('./data/summary.json')
-        .then(r => r.json());
+        .then(r=>r.json());
+
+    const week = summary[0];
 
     const cycling =
         athlete.sportSettings.find(
             s => s.types.includes('Ride')
         );
 
-    const running =
-        athlete.sportSettings.find(
-            s => s.types.includes('Run')
-        );
+    document.getElementById('week-km').innerText =
+        (week.distance/1000).toFixed(1) + ' km';
 
-    const week = summary[0];
+    document.getElementById('week-elevation').innerText =
+        Math.round(week.total_elevation_gain) + ' m+';
 
-    document.getElementById('dashboard-ftp').innerText =
-        cycling.ftp + ' W';
+    document.getElementById('week-time').innerText =
+        formatTime(week.time);
 
-    document.getElementById('dashboard-weight').innerText =
-        athlete.icu_weight + ' kg';
-
-    document.getElementById('dashboard-wkg').innerText =
-        (cycling.ftp / athlete.icu_weight).toFixed(2);
-
-    document.getElementById('dashboard-fitness').innerText =
-        week.fitness.toFixed(1);
-
-    document.getElementById('dashboard-fatigue').innerText =
-        week.fatigue.toFixed(1);
-
-    document.getElementById('dashboard-form').innerText =
-        week.form.toFixed(1);
-
-    document.getElementById('dashboard-distance').innerText =
-        (week.distance / 1000).toFixed(1) + ' km';
-
-    document.getElementById('dashboard-load').innerText =
-        week.training_load;
-
-    document.getElementById('dashboard-count').innerText =
+    document.getElementById('week-activities').innerText =
         week.count;
 
-    document.getElementById('power-ftp').innerText =
+    document.getElementById('week-load').innerText =
+        week.training_load;
+
+    document.getElementById('fitness').innerText =
+        week.fitness.toFixed(1);
+
+    document.getElementById('fatigue').innerText =
+        week.fatigue.toFixed(1);
+
+    document.getElementById('form').innerText =
+        week.form.toFixed(1);
+
+    const statusEl =
+        document.getElementById('training-status');
+
+    if(week.form > 5){
+        statusEl.innerHTML =
+            '<span class="status-good">✅ Fresco</span>';
+    }
+    else if(week.form < -5){
+        statusEl.innerHTML =
+            '<span class="status-bad">🔴 Sobrecargado</span>';
+    }
+    else{
+        statusEl.innerHTML =
+            '<span class="status-neutral">🟡 Neutro</span>';
+    }
+
+    document.getElementById('ftp').innerText =
         cycling.ftp + ' W';
 
-    document.getElementById('power-indoor').innerText =
-        cycling.indoor_ftp + ' W';
-
-    document.getElementById('power-cp').innerText =
+    document.getElementById('cp').innerText =
         cycling.mmp_model.criticalPower + ' W';
 
-    document.getElementById('power-wprime').innerText =
-        cycling.mmp_model.wPrime;
+    document.getElementById('wprime').innerText =
+        Math.round(cycling.mmp_model.wPrime / 1000) + ' kJ';
 
-    document.getElementById('hr-lthr').innerText =
+    document.getElementById('lthr').innerText =
         cycling.lthr;
 
-    document.getElementById('hr-max').innerText =
+    document.getElementById('maxhr').innerText =
         cycling.max_hr;
 
-    document.getElementById('config-name').innerText =
-        athlete.name;
+    const zonesDiv =
+        document.getElementById('zones');
 
-    document.getElementById('config-location').innerText =
-        athlete.city + ', ' + athlete.country;
+    const total =
+        week.timeInZones.reduce((a,b)=>a+b,0);
 
-    document.getElementById('config-weight').innerText =
-        athlete.icu_weight + ' kg';
+    let html = '';
 
-    const bikes =
-        athlete.bikes
-            .map(b => b.name)
-            .join('<br>');
+    week.timeInZones.forEach((z,index)=>{
 
-    document.getElementById('config-bikes').innerHTML =
-        bikes;
+        const pct =
+            total > 0
+                ? (z/total)*100
+                : 0;
+
+        html += `
+            <div class="zone">
+                <div class="zone-name">
+                    Z${index+1} - ${formatTime(z)}
+                </div>
+                <div class="bar">
+                    <div class="fill" style="width:${pct}%">
+                        ${pct.toFixed(1)}%
+                    </div>
+                </div>
+            </div>
+        `;
+
+    });
+
+    zonesDiv.innerHTML = html;
 
 }
 
